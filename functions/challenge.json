@@ -1,0 +1,9 @@
+{
+  "title": "Follow the signal",
+  "prompt": "A mobile app needs to show each learner their progress while keeping rewards trustworthy. Identify which Firebase service verifies identity, how Firestore checks ownership, and where the 10-point reward should be awarded. Tap Complete Challenge when you can explain all three.",
+  "hints": [
+    "Start with Firebase Authentication. Think about which verified identifier stays the same when a learner signs in again.",
+    "Compare the authenticated UID with the UID in the Firestore document path. Ask what a rule should do when they differ.",
+    "Put the reward decision in a callable Cloud Function. A Firestore transaction can check whether progress was already completed before it records the reward."
+  ]
+}

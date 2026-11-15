@@ -1,0 +1,22 @@
+{
+  "name": "firebase-cloud-quest-cw3-functions",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "test": "node --test emulator.test.js",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^13",
+    "firebase-functions": "^7",
+    "genkit": "^1"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5",
+    "firebase": "^12"
+  }
+}
