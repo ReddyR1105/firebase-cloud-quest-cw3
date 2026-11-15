@@ -1,0 +1,19 @@
+Command: npm audit --omit=dev --json
+{
+  "vulnerabilities": {
+    "info": 0,
+    "low": 0,
+    "moderate": 62,
+    "high": 9,
+    "critical": 0,
+    "total": 71
+  },
+  "dependencies": {
+    "prod": 304,
+    "dev": 1,
+    "optional": 261,
+    "peer": 0,
+    "peerOptional": 0,
+    "total": 565
+  }
+}
