@@ -1,12 +1,12 @@
 Provisional Gemini verification, November 15, 2026
 Configured model: googleai/gemini-3.6-flash
 Genkit and Google GenAI plugin versions: 1.44.0 and 1.44.0
-Nonempty credential settings in the process environment: 0
-Nonempty credential settings in local Functions configuration files: 0
-Live Gemini API call: BLOCKED by missing server-side credential.
+Live Gemini API call: PASS through the authenticated askQuestCoach callable.
+The test used a process-local server-side credential. The temporary encrypted input was removed after the run.
 Course clarification as reported by the student: a free AI model with standard agents is allowed. The earlier course setup was unspecified in the available text.
 Google lists Gemini 3.6 Flash on the Developer API Standard Free Tier. See the official pricing link in README.md.
 The installed plugin passed a loopback provider fixture. The deterministic emulator Signal Check ran separately.
+The credential-backed Signal Check selected a grounded hint through Genkit, refused the adversarial request, and left both Firestore records unchanged. See gemini-live-signal-check.txt for the recorded responses, execution order, and snapshots.
 ok 9 - Gemini Flash adapter sends only grounded input to a local provider fixture
 ok 10 - Signal Check uses authenticated state and leaves both learners’ records unchanged
 # pass 10

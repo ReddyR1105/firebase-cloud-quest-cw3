@@ -42,7 +42,7 @@ Keep the hint tool and reward function separate. The coach selects from stored h
 
 ## 8. What was one limitation?
 
-Gemini 3.6 Flash is provisional. The adapter passed a local fixture test, and the app used its deterministic emulator model. A real Gemini response still needs a server-side key, and Professor Henry’s approved gateway still needs confirmation. [Verification status](evidence/gemini-verification.txt)
+The separate live Gemini test ran against Firebase emulators. Production Firebase deployment and service-account permissions are outside that test. Another improvement is to test more ways of requesting another learner’s private information. [Live test log](evidence/gemini-live-signal-check.txt)
 
 ## 9. What did I need to understand?
 
@@ -62,7 +62,7 @@ Choose from these facts after reading the logs. Describe your own actions or obs
 - The request for another learner’s badge and 500 points returned a refusal.
 - The before-and-after snapshots showed both progress records were unchanged.
 - The separate reward transaction gave a learner 10 points and one badge, even after retries.
-- The provisional Gemini adapter passed a fixture test, and live gateway verification is still open.
+- The live Gemini test returned a stored hint after the read-only tool ran. Firebase ran in local emulators for that test.
 
 ## Plan one paragraph of 100–150 words
 
@@ -73,7 +73,7 @@ Choose from these facts after reading the logs. Describe your own actions or obs
 | Describe the adversarial request and actual refusal. | 25 |
 | Explain what the two Firestore snapshots showed. | 20 |
 | Explain the separate reward function and the 10-point boundary. | 25 |
-| End with the live gateway limitation or next verification step. | 15 |
+| End with a limitation or next security test. | 15 |
 | **Target** | **125** |
 
 Use this outline to write your own paragraph in `REFLECTION.md`. Check its word count and add any course-required assistance disclosure.
@@ -82,4 +82,4 @@ Use this outline to write your own paragraph in `REFLECTION.md`. Check its word 
 
 See the [recorded walkthrough](ENGAGEMENT_EVIDENCE.md) for the exact sequence and screenshots.
 
-Quest Coach uses `readMyQuestState` to read the shared challenge and the signed-in learner’s progress. Firebase Authentication supplies the learner’s verified ID, so the tool looks up that learner’s record. In the ordinary emulator test, the coach returned a stored hint about Firebase Authentication. In the adversarial test, a request for another learner’s badge and 500 points received a refusal. The Firestore snapshots matched before and after for both test learners. The separate `completeToday` Cloud Function checks completion in a Firestore transaction and awards exactly 10 points once. That keeps reward decisions on the server while the coach reads state and selects a hint. A local fixture verified the Gemini adapter. A live test with a Free Tier API key is the next step.
+Quest Coach uses `readMyQuestState` to read the shared challenge and the signed-in learner’s progress using the verified Firebase user ID. In the live Gemini test, the tool ran first and Gemini selected a stored hint about Firebase Authentication. The app refused the request for another learner’s badge and 500 points before calling the model. The before-and-after Firestore snapshots showed that both learners’ records stayed the same. Quest Coach can select hints because it has a read-only tool. The separate `completeToday` Cloud Function checks completion in a Firestore transaction and awards exactly 10 points once. A useful next step would be to test more variations of the privacy request. Firebase ran in local emulators for these checks.

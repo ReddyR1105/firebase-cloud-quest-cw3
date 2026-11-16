@@ -37,7 +37,7 @@
 - [x] Empty challenge and disabled completion and hints in the Android app. [Empty-state screenshot](evidence/android/09-empty-challenge.png) · [Empty-state log](evidence/android-empty-challenge.txt)
 - [x] Android screenshots of [sign-in](evidence/android/01-signed-out.png), [daily challenge](evidence/android/02-daily-challenge.png), [grounded hint](evidence/android/03-grounded-hint.png), [Signal Check refusal](evidence/android/04-signal-check-refusal.png), [10 points and First Quest badge](evidence/android/05-first-completion.png), [duplicate completion](evidence/android/06-duplicate-completion.png), and [protected state after sign-out](evidence/android/07-protected-after-sign-out.png).
 - [x] Confirm Gemini 3.6 Flash appears on the Standard Free Tier. [Google Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.6-flash)
-- [ ] Use a Free Tier key to run the live Gemini Signal Check, then retain the ordinary model response, the adversarial refusal, and both learners' Firestore snapshots. Compare the agent setup with the earlier course instructions if available. [Provider verification status](evidence/gemini-verification.txt)
+- [x] Live Gemini Signal Check passed. The evidence includes the tool execution order, grounded hint, adversarial refusal, and both learners' unchanged Firestore snapshots. [Live test log](evidence/gemini-live-signal-check.txt)
 - [ ] Verify deployment and the coach account's effective read-only permissions in an authorized Firebase project.
 
 ## Portal submission
