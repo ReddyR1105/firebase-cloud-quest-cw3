@@ -42,14 +42,14 @@ Verified on November 15, 2026 against the assignment brief and the seven undergr
 
 | Category | Estimate | Basis for score |
 |---|---:|---|
-| Engagement and learning process | 2 / 5 | Fresh repository history and reproducible test work are documented. Student-specific learning evidence is pending. [Walkthrough](STUDENT_WALKTHROUGH_GUIDE.md) |
+| Engagement and learning process | 4 / 5 | The reproducible seven-step walkthrough ties actual screenshots and logs to the separate read and reward design. The student reflection is included. Additional personally recorded evidence depends on the instructor's requirements. [Engagement evidence](ENGAGEMENT_EVIDENCE.md) · [Reflection](REFLECTION.md) |
 | Conceptual understanding | 15 / 15 | The README explains verified identity, rules, trusted transactions, and the model boundary. Ownership and reward assumptions were tested. [README](README.md) · [Backend results](evidence/backend-tests.txt) |
 | Core application | 30 / 30 | Android app, Auth, Firestore, protected progress, one-time rewards, and service-error recovery ran successfully. [Android journey](evidence/android-integration.txt) · [Backend results](evidence/backend-tests.txt) |
 | AI agent | 10 / 15 | The read-only tool, emulator flow, and Gemini adapter fixture passed. Free Tier eligibility is documented. Live model access and the exact course-specific agent setup remain unverified. [Source](functions/index.js) · [Tool events](evidence/quest-coach-tool.txt) |
 | Reasoning and reflection | 10 / 10 | The final student reflection ties the evidence to the security design and identifies a next step. [Reflection](REFLECTION.md) |
 | Testing and evidence | 13 / 15 | Fresh local runs, nine screenshots, and real before-and-after records are present. Live model evidence remains open. [Evidence](evidence/) |
 | Communication and delivery | 9 / 10 | Named package and complete documentation are present. Grader access and portal requirements remain unconfirmed. [Checklist](SUBMISSION_CHECKLIST.md) |
-| **Total** | **89 / 100** | Estimate based on the supplied category weights. The instructor determines the grade. |
+| **Total** | **91 / 100** | Estimate based on the supplied category weights. The instructor determines the grade. |
 
 ## Submission handoff
 

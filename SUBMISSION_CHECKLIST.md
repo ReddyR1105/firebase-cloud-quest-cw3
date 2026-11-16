@@ -20,6 +20,7 @@
 - [x] Firebase config, security rules, callable source, challenge seed, and automated test source.
 - [x] README, [final reflection](REFLECTION.md), [final submission audit](FINAL_SUBMISSION_AUDIT.md), and this checklist.
 - [x] [Student reflection guide](STUDENT_REFLECTION_GUIDE.md), [student walkthrough guide](STUDENT_WALKTHROUGH_GUIDE.md), and [updated rubric audit](RUBRIC_AUDIT.md).
+- [x] [Engagement evidence](ENGAGEMENT_EVIDENCE.md) with reproducible commands, seven steps, screenshots, and a security design explanation.
 - [x] Confirmed submission name and added it to the README and checklist.
 - [ ] Confirm the grader's GitHub account, arrange private repository access, and verify it works. GitHub showed zero non-owner direct collaborators and zero pending invitations. [Access check](evidence/repository-access.txt)
 

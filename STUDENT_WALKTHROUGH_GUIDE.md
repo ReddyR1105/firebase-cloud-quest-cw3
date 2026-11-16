@@ -22,3 +22,5 @@ Firebase Auth verifies the learner’s UID. Firestore rules protect progress fro
 The **Check completion** button sends another request to the server. The unchanged balance is enforced by the Firestore transaction. It does not depend on hiding or disabling the button after the first tap. Compare the first completion and retry screenshots, then explain why the concurrent test matters. [Reward test results](evidence/backend-tests.txt)
 
 If the course asks for engagement evidence, note which steps you ran, what you saw, and one thing you learned. The screenshots in this repository came from automated tests.
+
+The [engagement evidence](ENGAGEMENT_EVIDENCE.md) provides the commands and records a result for each step.
