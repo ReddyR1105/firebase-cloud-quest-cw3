@@ -1,16 +1,14 @@
 # CW3 rubric audit
 
-See [the final submission audit](FINAL_SUBMISSION_AUDIT.md) for the rerun results and estimated score.
+Local verification was rerun on November 15, 2026. The evidence supports an estimate of **87/100** using the supplied rubric weights. The instructor determines the grade. [Final submission audit](FINAL_SUBMISSION_AUDIT.md)
 
-| Category | Available points | Implementation and evidence | Remaining verification |
-|---|---:|---|---|
-| Engagement and learning process | 5 | Fresh repository history and the automated workflow documented in the README and test logs | Student should review the architecture and supply any process evidence required by the course. |
-| Conceptual understanding | 15 | README explains UID ownership, server authorization, and the reward transaction. The challenge asks the learner to explain each part. | Student should be prepared to explain these decisions independently. |
-| Core application | 30 | Flutter auth, challenge stream, private progress, completion, error and loading states in `lib/`. Ten backend tests cover rules, the reward callable, and the coach. | Live Firebase and iOS execution are unverified. |
-| AI agent | 15 | `functions/index.js` defines `readMyQuestState`, verified UID context, configurable Genkit, a provisional Gemini 3.6 Flash adapter, and the deterministic emulator model. The installed adapter passed a local provider fixture with redacted outbound context. [Backend log](evidence/backend-tests.txt) | Verify live Gemini with a server-side credential and confirm the professor-approved gateway before claiming course approval. |
-| Reasoning and reflection | 10 | `REFLECTION.md` links the observed hint and refusal behavior to the data access design. | Student should review and finalize the reflection. |
-| Testing and evidence | 15 | Ten passing backend scenarios, four passing Flutter tests, clean static analysis, and two passing Android runs. The evidence directory contains Android screenshots and before-and-after Firestore records for both the emulator and local Gemini adapter fixture. | Live Gemini, course gateway, and cloud Firebase verification remain open. |
-| Communication and delivery | 10 | README and checklist identify Rohan Reddy Gosangi and include the repository URL. Source, logs, and reflection draft are included. | Confirm portal deliverables, ensure the grader has access, and submit. |
-| **Total** | **100** | | |
-
-The point values are the rubric weights.
+| Category | Available | Estimated | Completed and evidence | Gap and exact next action |
+|---|---:|---:|---|---|
+| Engagement and learning process | 5 | 2 | Fresh repository history, automated runs, and a reproducible demo walkthrough are available. [Walkthrough guide](STUDENT_WALKTHROUGH_GUIDE.md) | Run the demo yourself and record one step you tried, the outcome you observed, and what it taught you. Attach the evidence the course requests. |
+| Conceptual understanding | 15 | 15 | The documentation explains authentication, authorization, client rules, and the trusted reward transaction. Tests verify the described behavior. [Concepts guide](STUDENT_REFLECTION_GUIDE.md#9-what-did-i-need-to-understand) · [Backend tests](evidence/backend-tests.txt) | For the demo, explain those four concepts in your own words using the UID and 10-point example. |
+| Core application | 30 | 30 | Android verified authentication, the daily challenge, private progress, fixed reward, repeat completion, retry, and empty states. [Android journey](evidence/android-integration.txt) · [Empty challenge](evidence/android-empty-challenge.txt) | Android satisfies the device run. Verify a live Firebase deployment if the course requires one. |
+| AI agent | 15 | 10 | The read-only tool grounds hints. The local Gemini adapter fixture verified the provider request, absence of learner IDs and badges, the refusal before a provider call, and unchanged Firestore records. [Functions source](functions/index.js) · [Backend snapshots](evidence/backend-tests.txt) | Get the approved provider/model and authorized server-side credential. Run the focused Signal Check in the README, verify the normal model response and adversarial refusal, and retain both learner snapshots. Gemini remains provisional. |
+| Reasoning and reflection | 10 | 8 | The guide explains the exact recorded responses, evidence, and reward boundary, with a 125-word outline. [Reflection guide](STUDENT_REFLECTION_GUIDE.md) | Write your own 100–150-word paragraph, replace the draft in `REFLECTION.md`, and add any required assistance disclosure. |
+| Testing and evidence | 15 | 13 | 10 backend tests, 4 Flutter tests, and 2 Android scenarios passed. Analysis reported zero issues. The backend log has before-and-after records and the Android evidence has nine screenshots. [Evidence](evidence/) | Capture the credential-backed test once access is available. If live Firebase is required, verify the deployed coach’s effective read-only permissions. |
+| Communication and delivery | 10 | 9 | Student identification, setup instructions, guides, checklist, and a verified source archive are available. [Checklist](SUBMISSION_CHECKLIST.md) · [Repository access check](evidence/repository-access.txt) | Confirm the grader’s GitHub account, arrange the required repository access, verify it works, and submit the final package through the course portal. |
+| **Total** | **100** | **87** | | |

@@ -94,10 +94,11 @@ flutter drive -d emulator-5554 --driver=test_driver/integration_test.dart --targ
 
 - Ten [backend tests](evidence/backend-tests.txt) passed. The log includes the saved 10-point reward and timestamp, an idempotent retry, a rejected direct client write, safe challenge and model failures, and before-and-after records for both learners. The installed Gemini adapter used a local provider fixture to verify the exact model ID, the structured hint, the outbound data boundary, and the refusal before a second provider request. [Tool log](evidence/quest-coach-tool.txt) · [Provider verification status](evidence/gemini-verification.txt)
 - [Static analysis](evidence/flutter-analyze.txt) reported zero issues, and all four [Flutter tests](evidence/flutter-tests.txt) passed.
-- [Emulator startup](evidence/firebase-emulators.txt) records the local Auth, Firestore, and Cloud Functions run.
+- [Emulator startup](evidence/firebase-emulators.txt) records the local Auth, Firestore, and Cloud Functions run. [Flutter dependency resolution](evidence/flutter-pub-get.txt)
 - The [Android integration test](evidence/android-integration.txt) passed on an Android 17 emulator. It covered registration, both coach requests, first and repeat completion, failed sign-in and recovery, coach service-error recovery, sign-out, and cleared private UI state. The test driver supplies keyboard input while the app uses the Firebase emulators. [Android screenshots](evidence/android/)
 - A separate Android run verified the empty challenge, the retry button, and disabled completion and hint controls before the seed was restored. [Empty challenge test](evidence/android-empty-challenge.txt)
 - See the [final submission audit](FINAL_SUBMISSION_AUDIT.md) for the readiness decision, scoring, and remaining actions.
+- Use the [student reflection guide](STUDENT_REFLECTION_GUIDE.md) to review the recorded responses and the [walkthrough guide](STUDENT_WALKTHROUGH_GUIDE.md) to demonstrate the app. See the [submission checklist](SUBMISSION_CHECKLIST.md) for the full evidence inventory and the [repository access check](evidence/repository-access.txt).
 
 ## Limitations
 

@@ -17,3 +17,8 @@ Command: npm audit --omit=dev --json
     "total": 591
   }
 }
+High severity package entries: @genkit-ai/core, @opentelemetry/propagator-jaeger, @opentelemetry/sdk-trace-node, zod
+
+Command: npm audit fix --dry-run --ignore-scripts --json
+{"added":0,"removed":0,"changed":0}
+Current supported Genkit and Google GenAI plugin versions from npm: 1.44.0 and 1.44.0.

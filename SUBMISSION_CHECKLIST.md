@@ -19,8 +19,9 @@
 - [x] Fresh Flutter project, Android and iOS templates, local Git repository, and a newly created private GitHub repository.
 - [x] Firebase config, security rules, callable source, challenge seed, and automated test source.
 - [x] README, reflection draft, [final submission audit](FINAL_SUBMISSION_AUDIT.md), and this checklist.
+- [x] [Student reflection guide](STUDENT_REFLECTION_GUIDE.md), [student walkthrough guide](STUDENT_WALKTHROUGH_GUIDE.md), and [updated rubric audit](RUBRIC_AUDIT.md).
 - [x] Confirmed submission name and added it to the README and checklist.
-- [ ] Check repository access for Professor Henry or the grader under the course's instructions.
+- [ ] Confirm the grader's GitHub account, arrange private repository access, and verify it works. GitHub showed zero non-owner direct collaborators and zero pending invitations. [Access check](evidence/repository-access.txt)
 
 ## Evidence
 
@@ -28,6 +29,8 @@
 - [x] Real ordinary and adversarial emulator coach outputs and matching Firestore state before and after. [Backend log](evidence/backend-tests.txt)
 - [x] Provisional Gemini 3.6 Flash adapter tested against a local provider fixture. It requested the intended model ID, sent no learner IDs or badge values, and preserved both progress records. [Backend log](evidence/backend-tests.txt)
 - [x] Static analysis with zero issues and four passing Flutter tests. [Analysis log](evidence/flutter-analyze.txt) · [Test log](evidence/flutter-tests.txt)
+- [x] Local emulator startup, package resolution, and authorized coach tool logs. [Emulators](evidence/firebase-emulators.txt) · [Flutter dependencies](evidence/flutter-pub-get.txt) · [Tool events](evidence/quest-coach-tool.txt)
+- [x] Functions dependency audit reviewed. [Dependency audit and automatic-fix dry run](evidence/dependency-audit.txt)
 - [x] Android emulator user journey, including registration, sign-in, protected content, hint requests, first completion, unchanged retry, and sign-out. [Android test log](evidence/android-integration.txt)
 - [x] Quest Coach service failure and retry, failed sign-in and recovery, and cleared private state after sign-out. [Service-error screenshot](evidence/android/08-coach-service-error.png)
 - [x] Empty challenge and disabled completion and hints in the Android app. [Empty-state screenshot](evidence/android/09-empty-challenge.png) · [Empty-state log](evidence/android-empty-challenge.txt)
@@ -38,8 +41,14 @@
 
 ## Portal submission
 
-1. Review the reflection and rubric audit. Finalize any required personal observations and assistance disclosure.
+1. Run the walkthrough and record your actual observations if the course requests engagement evidence. Write your own 100–150-word paragraph in `REFLECTION.md` and add any required assistance disclosure. Commit and push your updated reflection, then regenerate the source archive if it is required by the portal.
 2. Open the CW3 assignment in the course portal and confirm the required files, link permissions, and any additional deliverables. The attachment does not specify the portal's exact upload fields.
 3. Provide the GitHub URL. For a source-file upload, use `firebase_cloud_quest_cw3_submission.zip`. For separate attachments, use `README.md`, the reviewed `REFLECTION.md`, `FINAL_SUBMISSION_AUDIT.md`, `SUBMISSION_CHECKLIST.md`, and the requested files under `evidence/`. Verify the submission receipt.
+
+After committing your finished reflection, regenerate the ZIP from the project root if the portal asks for the source archive.
+
+```powershell
+git archive --format=zip --prefix=firebase_cloud_quest_cw3/ -o ../firebase_cloud_quest_cw3_submission.zip HEAD
+```
 
 **Portal status:** Pending.
