@@ -48,9 +48,9 @@ Use the actual identifier from `flutter devices`. `flutter run -d chrome` uses t
 
 ## Provisional Gemini and the course gateway
 
-The provisional provider is Google Gemini Developer API, using `googleai/gemini-3.6-flash` and `@genkit-ai/google-genai` 1.44.0 with Genkit 1.44.0. Professor Henry has yet to approve this provider or model. The adapter and deterministic emulator model have passed local tests. A live Gemini API response remains unverified because a credential was unavailable. [Gemini model documentation](https://aistudio.google.com/docs/models/gemini-3.6-flash) · [Genkit Google GenAI plugin](https://genkit.dev/docs/js/integrations/google-genai/)
+The configured provider is Google Gemini Developer API, using `googleai/gemini-3.6-flash` and `@genkit-ai/google-genai` 1.44.0 with Genkit 1.44.0. Google lists this model on the Developer API Standard Free Tier. The instructor's clarification allows a free model with standard agents. The available course text leaves the earlier agent setup unspecified. The adapter and deterministic emulator model passed local tests. A live Gemini API response remains unverified because a credential was unavailable. [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing#gemini-3.6-flash) · [Gemini model documentation](https://aistudio.google.com/docs/models/gemini-3.6-flash) · [Genkit Google GenAI plugin](https://genkit.dev/docs/js/integrations/google-genai/)
 
-The Functions emulator uses the deterministic model when the gateway settings and local key are empty. For a live-provider test against the local Auth, Firestore, and Functions services, stop the existing emulator session and start it from a PowerShell terminal that holds the key. The masked prompt keeps the key out of command history and source files.
+The Functions emulator uses the deterministic model when the gateway settings and local key are empty. For live-provider verification, sign in to Google AI Studio, open API keys, choose **Create API key**, and select a project labeled **Free Tier**. Stop the existing emulator session and start it from a PowerShell terminal that holds the key. Enter the key at the masked prompt. [Google AI Studio API keys](https://aistudio.google.com/apikey)
 
 ```powershell
 $env:QUEST_LOCAL_MODEL_API_KEY = Read-Host -MaskInput "Gemini API key"

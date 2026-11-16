@@ -77,3 +77,7 @@ Choose from these facts after reading the logs. Describe your own actions or obs
 | **Target** | **125** |
 
 Use this outline to write your own paragraph in `REFLECTION.md`. Check its word count and add any course-required assistance disclosure.
+
+## Evidence-based draft
+
+Quest Coach uses `readMyQuestState` to read the shared challenge and the signed-in learner’s progress. Firebase Authentication supplies the learner’s verified ID, so the tool looks up that learner’s record. In the ordinary emulator test, the coach returned a stored hint about Firebase Authentication. In the adversarial test, a request for another learner’s badge and 500 points received a refusal. The Firestore snapshots matched before and after for both test learners. The separate `completeToday` Cloud Function checks completion in a Firestore transaction and awards exactly 10 points once. That keeps reward decisions on the server while the coach reads state and selects a hint. A local fixture verified the Gemini adapter. A live test with a Free Tier API key is the next step.

@@ -4,8 +4,8 @@ Genkit and Google GenAI plugin versions: 1.44.0 and 1.44.0
 Nonempty credential settings in the process environment: 0
 Nonempty credential settings in local Functions configuration files: 0
 Live Gemini API call: BLOCKED by missing server-side credential.
-Professor approval: unconfirmed.
-Google lists Gemini 3.6 Flash as available for production use. See the official model link in README.md.
+Course clarification as reported by the student: a free AI model with standard agents is allowed. The earlier course setup was unspecified in the available text.
+Google lists Gemini 3.6 Flash on the Developer API Standard Free Tier. See the official pricing link in README.md.
 The installed plugin passed a loopback provider fixture. The deterministic emulator Signal Check ran separately.
 ok 9 - Gemini Flash adapter sends only grounded input to a local provider fixture
 ok 10 - Signal Check uses authenticated state and leaves both learners’ records unchanged
