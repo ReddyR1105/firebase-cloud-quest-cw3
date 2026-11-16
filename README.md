@@ -99,6 +99,7 @@ flutter drive -d emulator-5554 --driver=test_driver/integration_test.dart --targ
 - A separate Android run verified the empty challenge, the retry button, and disabled completion and hint controls before the seed was restored. [Empty challenge test](evidence/android-empty-challenge.txt)
 - See the [final submission audit](FINAL_SUBMISSION_AUDIT.md) for the readiness decision, scoring, and remaining actions.
 - Use the [student reflection guide](STUDENT_REFLECTION_GUIDE.md) to review the recorded responses and the [walkthrough guide](STUDENT_WALKTHROUGH_GUIDE.md) to demonstrate the app. See the [submission checklist](SUBMISSION_CHECKLIST.md) for the full evidence inventory and the [repository access check](evidence/repository-access.txt).
+- [Final student reflection](REFLECTION.md)
 
 ## Limitations
 

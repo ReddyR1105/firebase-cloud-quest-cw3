@@ -25,9 +25,9 @@ Verified on November 15, 2026 against the assignment brief and the seven undergr
 | Security rules | PASS | The emulator allowed authenticated challenge reads and owner progress reads. It denied signed-out reads, cross-user reads, challenge writes, and all direct reward creates, updates, and deletes. [Rules](firestore.rules) · [Backend results](evidence/backend-tests.txt) | Deploy and check the same rules if live Firebase is required. |
 | Emulator testing | PASS | `flutter pub get`, zero analyzer issues, four Flutter tests, ten backend tests, and two Android runs. The primary run included service-error recovery and the second removed and restored the challenge fixture. [Startup](evidence/firebase-emulators.txt) · [Dependency resolution](evidence/flutter-pub-get.txt) · [Analysis](evidence/flutter-analyze.txt) · [Flutter tests](evidence/flutter-tests.txt) · [Android journey](evidence/android-integration.txt) · [Empty challenge](evidence/android-empty-challenge.txt) | Live model access and production IAM remain unverified. |
 | README | PASS | Covers student identity, course and pathway, target platforms, setup, architecture, rules, model configuration, actual test results, evidence, and known limitations. [README](README.md) | Add course gateway specifics when supplied. |
-| Reflection | BLOCKED | The reflection guide gives the exact recorded responses, supporting evidence, and a 125-word outline. [Student guide](STUDENT_REFLECTION_GUIDE.md) | Rohan needs to write his own final 100–150-word paragraph and add any required course disclosure. |
+| Reflection | PASS | The final student reflection is one paragraph within the 100–150-word requirement. It covers the read-only tool, grounded hint, adversarial refusal, unchanged records, reward transaction, and a next step. [Reflection](REFLECTION.md) | Include any course-required assistance disclosure with the submission. |
 | GitHub repository | PASS | The local repository uses a fresh root commit and the dedicated private remote is reachable. GitHub reported zero non-owner direct collaborators and zero pending invitations. [GitHub repository](https://github.com/ReddyR1105/firebase-cloud-quest-cw3) · [Access check](evidence/repository-access.txt) | Confirm the grader's GitHub account, arrange access, and verify it works. |
-| Submission handoff | BLOCKED | Source archive, evidence, repository URL, and submission documents are prepared. [Checklist](SUBMISSION_CHECKLIST.md) | Confirm grader access and the exact portal fields, finalize the student material, and upload through the portal once the gateway is verified. |
+| Submission handoff | BLOCKED | Source archive, evidence, repository URL, final student reflection, and submission documents are prepared. [Checklist](SUBMISSION_CHECKLIST.md) | Confirm grader access and the exact portal fields. Include any required student engagement evidence and follow the course's gateway instructions before uploading. |
 
 ## Repairs and regression results
 
@@ -46,10 +46,10 @@ Verified on November 15, 2026 against the assignment brief and the seven undergr
 | Conceptual understanding | 15 / 15 | The README explains verified identity, rules, trusted transactions, and the model boundary. Ownership and reward assumptions were tested. [README](README.md) · [Backend results](evidence/backend-tests.txt) |
 | Core application | 30 / 30 | Android app, Auth, Firestore, protected progress, one-time rewards, and service-error recovery ran successfully. [Android journey](evidence/android-integration.txt) · [Backend results](evidence/backend-tests.txt) |
 | AI agent | 10 / 15 | The read-only tool, emulator flow, and provisional Gemini adapter fixture passed. Live model access and professor approval remain unverified. [Source](functions/index.js) · [Tool events](evidence/quest-coach-tool.txt) |
-| Reasoning and reflection | 8 / 10 | The reflection guide ties the evidence to the security design. Student authorship and any required disclosure remain open. [Reflection guide](STUDENT_REFLECTION_GUIDE.md) |
+| Reasoning and reflection | 10 / 10 | The final student reflection ties the evidence to the security design and identifies a next step. [Reflection](REFLECTION.md) |
 | Testing and evidence | 13 / 15 | Fresh local runs, nine screenshots, and real before-and-after records are present. Live model evidence remains open. [Evidence](evidence/) |
 | Communication and delivery | 9 / 10 | Named package and complete documentation are present. Grader access and portal requirements remain unconfirmed. [Checklist](SUBMISSION_CHECKLIST.md) |
-| **Total** | **87 / 100** | Estimate based on the supplied category weights. The instructor determines the grade. |
+| **Total** | **89 / 100** | Estimate based on the supplied category weights. The instructor determines the grade. |
 
 ## Submission handoff
 
@@ -60,4 +60,4 @@ Verified on November 15, 2026 against the assignment brief and the seven undergr
 
 **NOT READY TO SUBMIT**
 
-Run the credential-backed Gemini check if a key becomes available and confirm the course-approved gateway. Review and finalize the reflection and required student-specific material, then confirm the instructor can access the private repository. Verify cloud deployment and effective coach IAM if the course requires the live Firebase path.
+Run the credential-backed Gemini check if a key becomes available and confirm the course-approved gateway. Confirm instructor access to the private repository and include any required engagement evidence or assistance disclosure. Verify cloud deployment and effective coach IAM if the course requires the live Firebase path.

@@ -18,7 +18,7 @@
 
 - [x] Fresh Flutter project, Android and iOS templates, local Git repository, and a newly created private GitHub repository.
 - [x] Firebase config, security rules, callable source, challenge seed, and automated test source.
-- [x] README, reflection draft, [final submission audit](FINAL_SUBMISSION_AUDIT.md), and this checklist.
+- [x] README, [final reflection](REFLECTION.md), [final submission audit](FINAL_SUBMISSION_AUDIT.md), and this checklist.
 - [x] [Student reflection guide](STUDENT_REFLECTION_GUIDE.md), [student walkthrough guide](STUDENT_WALKTHROUGH_GUIDE.md), and [updated rubric audit](RUBRIC_AUDIT.md).
 - [x] Confirmed submission name and added it to the README and checklist.
 - [ ] Confirm the grader's GitHub account, arrange private repository access, and verify it works. GitHub showed zero non-owner direct collaborators and zero pending invitations. [Access check](evidence/repository-access.txt)
@@ -41,14 +41,8 @@
 
 ## Portal submission
 
-1. Run the walkthrough and record your actual observations if the course requests engagement evidence. Write your own 100–150-word paragraph in `REFLECTION.md` and add any required assistance disclosure. Commit and push your updated reflection, then regenerate the source archive if it is required by the portal.
+1. Include any course-required engagement evidence or assistance disclosure in the portal. The source archive contains the finalized reflection.
 2. Open the CW3 assignment in the course portal and confirm the required files, link permissions, and any additional deliverables. The attachment does not specify the portal's exact upload fields.
-3. Provide the GitHub URL. For a source-file upload, use `firebase_cloud_quest_cw3_submission.zip`. For separate attachments, use `README.md`, the reviewed `REFLECTION.md`, `FINAL_SUBMISSION_AUDIT.md`, `SUBMISSION_CHECKLIST.md`, and the requested files under `evidence/`. Verify the submission receipt.
-
-After committing your finished reflection, regenerate the ZIP from the project root if the portal asks for the source archive.
-
-```powershell
-git archive --format=zip --prefix=firebase_cloud_quest_cw3/ -o ../firebase_cloud_quest_cw3_submission.zip HEAD
-```
+3. Provide the GitHub URL. For a source-file upload, use `firebase_cloud_quest_cw3_submission.zip`. For separate attachments, use `README.md`, `REFLECTION.md`, `FINAL_SUBMISSION_AUDIT.md`, `SUBMISSION_CHECKLIST.md`, and the requested files under `evidence/`. Verify the submission receipt.
 
 **Portal status:** Pending.

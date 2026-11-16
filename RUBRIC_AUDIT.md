@@ -1,6 +1,6 @@
 # CW3 rubric audit
 
-Local verification was rerun on November 15, 2026. The evidence supports an estimate of **87/100** using the supplied rubric weights. The instructor determines the grade. [Final submission audit](FINAL_SUBMISSION_AUDIT.md)
+Local verification was rerun on November 15, 2026. With the final reflection included, the evidence supports an estimate of **89/100** using the supplied rubric weights. The instructor determines the grade. [Final submission audit](FINAL_SUBMISSION_AUDIT.md)
 
 | Category | Available | Estimated | Completed and evidence | Gap and exact next action |
 |---|---:|---:|---|---|
@@ -8,7 +8,7 @@ Local verification was rerun on November 15, 2026. The evidence supports an esti
 | Conceptual understanding | 15 | 15 | The documentation explains authentication, authorization, client rules, and the trusted reward transaction. Tests verify the described behavior. [Concepts guide](STUDENT_REFLECTION_GUIDE.md#9-what-did-i-need-to-understand) · [Backend tests](evidence/backend-tests.txt) | For the demo, explain those four concepts in your own words using the UID and 10-point example. |
 | Core application | 30 | 30 | Android verified authentication, the daily challenge, private progress, fixed reward, repeat completion, retry, and empty states. [Android journey](evidence/android-integration.txt) · [Empty challenge](evidence/android-empty-challenge.txt) | Android satisfies the device run. Verify a live Firebase deployment if the course requires one. |
 | AI agent | 15 | 10 | The read-only tool grounds hints. The local Gemini adapter fixture verified the provider request, absence of learner IDs and badges, the refusal before a provider call, and unchanged Firestore records. [Functions source](functions/index.js) · [Backend snapshots](evidence/backend-tests.txt) | Get the approved provider/model and authorized server-side credential. Run the focused Signal Check in the README, verify the normal model response and adversarial refusal, and retain both learner snapshots. Gemini remains provisional. |
-| Reasoning and reflection | 10 | 8 | The guide explains the exact recorded responses, evidence, and reward boundary, with a 125-word outline. [Reflection guide](STUDENT_REFLECTION_GUIDE.md) | Write your own 100–150-word paragraph, replace the draft in `REFLECTION.md`, and add any required assistance disclosure. |
+| Reasoning and reflection | 10 | 10 | The final reflection describes the walkthrough, grounded hint, refusal, before-and-after records, reward transaction, and one next step in one paragraph. [Reflection](REFLECTION.md) | Include any course-required assistance disclosure with the submission. |
 | Testing and evidence | 15 | 13 | 10 backend tests, 4 Flutter tests, and 2 Android scenarios passed. Analysis reported zero issues. The backend log has before-and-after records and the Android evidence has nine screenshots. [Evidence](evidence/) | Capture the credential-backed test once access is available. If live Firebase is required, verify the deployed coach’s effective read-only permissions. |
 | Communication and delivery | 10 | 9 | Student identification, setup instructions, guides, checklist, and a verified source archive are available. [Checklist](SUBMISSION_CHECKLIST.md) · [Repository access check](evidence/repository-access.txt) | Confirm the grader’s GitHub account, arrange the required repository access, verify it works, and submit the final package through the course portal. |
-| **Total** | **100** | **87** | | |
+| **Total** | **100** | **89** | | |
