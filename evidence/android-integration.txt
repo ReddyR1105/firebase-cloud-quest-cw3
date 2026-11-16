@@ -1,6 +1,6 @@
 Command: flutter drive --no-pub -d emulator-5554 --driver=test_driver/integration_test.dart --target=integration_test/signal_check_test.dart
 √ Built build\app\outputs\flutter-apk\app-debug.apk
-Installing build\app\outputs\flutter-apk\app-debug.apk...          876ms
-I/flutter (14570): 00:00 +0: learner completes the full Android Signal Check journey
-I/flutter (14570): 00:27 +2: All tests passed!
+Installing build\app\outputs\flutter-apk\app-debug.apk...        1,642ms
+I/flutter (15574): 00:00 +0: learner completes the full Android Signal Check journey
+I/flutter (15574): 00:21 +2: All tests passed!
 All tests passed.

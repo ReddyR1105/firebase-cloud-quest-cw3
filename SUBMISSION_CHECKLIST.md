@@ -26,12 +26,14 @@
 
 - [x] Backend and rules tests, including signed-out requests, cross-user denial, client reward write denial, fixed reward, retry, and concurrent completion. [Backend log](evidence/backend-tests.txt)
 - [x] Real ordinary and adversarial emulator coach outputs and matching Firestore state before and after. [Backend log](evidence/backend-tests.txt)
+- [x] Provisional Gemini 3.6 Flash adapter tested against a local provider fixture. It requested the intended model ID, sent no learner IDs or badge values, and preserved both progress records. [Backend log](evidence/backend-tests.txt)
 - [x] Static analysis with zero issues and four passing Flutter tests. [Analysis log](evidence/flutter-analyze.txt) · [Test log](evidence/flutter-tests.txt)
 - [x] Android emulator user journey, including registration, sign-in, protected content, hint requests, first completion, unchanged retry, and sign-out. [Android test log](evidence/android-integration.txt)
 - [x] Quest Coach service failure and retry, failed sign-in and recovery, and cleared private state after sign-out. [Service-error screenshot](evidence/android/08-coach-service-error.png)
 - [x] Empty challenge and disabled completion and hints in the Android app. [Empty-state screenshot](evidence/android/09-empty-challenge.png) · [Empty-state log](evidence/android-empty-challenge.txt)
 - [x] Android screenshots of [sign-in](evidence/android/01-signed-out.png), [daily challenge](evidence/android/02-daily-challenge.png), [grounded hint](evidence/android/03-grounded-hint.png), [Signal Check refusal](evidence/android/04-signal-check-refusal.png), [10 points and First Quest badge](evidence/android/05-first-completion.png), [duplicate completion](evidence/android/06-duplicate-completion.png), and [protected state after sign-out](evidence/android/07-protected-after-sign-out.png).
 - [ ] Confirm course-approved model gateway and retain the ordinary and adversarial live-model verification.
+- [ ] Run the credential-backed provisional Gemini Signal Check if a key becomes available. Gemini remains provisional until Professor Henry approves it. [Provider verification status](evidence/gemini-verification.txt)
 - [ ] Verify deployment and the coach account's effective read-only permissions in an authorized Firebase project.
 
 ## Portal submission

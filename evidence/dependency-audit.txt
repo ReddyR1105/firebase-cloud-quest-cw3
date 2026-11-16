@@ -3,20 +3,17 @@ Command: npm audit --omit=dev --json
   "vulnerabilities": {
     "info": 0,
     "low": 0,
-    "moderate": 61,
+    "moderate": 62,
     "high": 4,
     "critical": 0,
-    "total": 65
+    "total": 66
   },
   "dependencies": {
-    "prod": 304,
+    "prod": 320,
     "dev": 1,
-    "optional": 282,
+    "optional": 271,
     "peer": 0,
     "peerOptional": 0,
-    "total": 586
+    "total": 591
   }
 }
-
-Command: npm audit fix --dry-run --ignore-scripts --json
-{"added":0,"removed":0,"changed":0}

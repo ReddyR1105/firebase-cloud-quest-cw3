@@ -1,11 +1,13 @@
 Firebase Functions emulator log excerpt, November 15, 2026
 >  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
+>  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
+>  {"severity":"INFO","message":"Quest Coach refused a request outside its hint scope."}
+>  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
 >  {"severity":"WARNING","message":"Quest state could not be read."}
 >  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
 >  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
+>  {"severity":"INFO","message":"Quest Coach refused a request outside its hint scope."}
 >  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
 >  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
->  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
->  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
->  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
+>  {"severity":"INFO","message":"Quest Coach refused a request outside its hint scope."}
 >  {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}

@@ -9,6 +9,9 @@ initializeApp();
 const db = getFirestore();
 const challengeRef = db.doc('challenges/today');
 const reward = { completed: true, points: 10, badgeId: 'first-quest' };
+const isEmulator = process.env.FUNCTIONS_EMULATOR === 'true';
+const geminiPlugin = '@genkit-ai/google-genai';
+const provisionalGeminiModel = 'googleai/gemini-3.6-flash';
 const gatewayKey = defineSecret('QUEST_MODEL_API_KEY');
 const gatewayModel = defineString('QUEST_MODEL_NAME', { default: '' });
 const gatewayPlugin = defineString('QUEST_MODEL_PLUGIN', { default: '' });
@@ -106,16 +109,14 @@ localAI.defineModel({
   };
 });
 
-function createModelAI(apiKey, pluginName) {
+function createModelAI(pluginName, exportName, apiKey) {
   const provider = require(pluginName);
-  const exportName = gatewayFactory.value();
   const factory = provider[exportName] ?? (exportName === 'default' ? provider : undefined);
   if (typeof factory !== 'function') throw new Error('Invalid Genkit plugin factory.');
   const options = JSON.parse(gatewayOptions.value());
   return genkit({ plugins: [factory({ ...options, ...(apiKey ? { apiKey } : {}) })] });
 }
 
-const isEmulator = process.env.FUNCTIONS_EMULATOR === 'true';
 const coachOptions = isEmulator ? {} : {
   secrets: [gatewayKey],
   serviceAccount: defineString('QUEST_COACH_SERVICE_ACCOUNT'),
@@ -140,19 +141,26 @@ exports.askQuestCoach = onCall(coachOptions, async request => {
   logger.info('readMyQuestState succeeded for the authenticated caller.');
 
   if (/\b(another learner|other learner|someone else|ignore your rules|give me \d+ points)\b/iu.test(question)) {
+    logger.info('Quest Coach refused a request outside its hint scope.');
     return {
       hint: 'I can help with today’s challenge. Other learners’ badges are private, and the coach cannot change rewards.',
       source: 'coach-policy',
     };
   }
-  const model = gatewayModel.value();
-  const plugin = gatewayPlugin.value();
+  const localKey = isEmulator ? process.env.QUEST_LOCAL_MODEL_API_KEY : undefined;
+  const plugin = gatewayPlugin.value() || (!isEmulator || localKey ? geminiPlugin : '');
+  const configuredExport = gatewayFactory.value();
+  const exportName = plugin === geminiPlugin && configuredExport === 'default'
+    ? 'googleAI' : configuredExport;
+  const usesGeminiApi = plugin === geminiPlugin && exportName === 'googleAI';
+  const model = gatewayModel.value() || (usesGeminiApi ? provisionalGeminiModel : '');
   const useLocalModel = isEmulator && !model && !plugin;
   try {
     if (!useLocalModel && !modelAI) {
       if (!model || !plugin) throw new Error('Missing Genkit model configuration.');
-      const key = isEmulator ? process.env.QUEST_LOCAL_MODEL_API_KEY : gatewayKey.value();
-      modelAI = createModelAI(key, plugin);
+      const key = isEmulator ? localKey : gatewayKey.value();
+      if (usesGeminiApi && !key) throw new Error('Missing server-side Gemini API key.');
+      modelAI = createModelAI(plugin, exportName, key);
     }
     const ai = useLocalModel ? localAI : modelAI;
     const { output } = await ai.generate({
@@ -165,6 +173,7 @@ exports.askQuestCoach = onCall(coachOptions, async request => {
     });
     const hint = state.challenge.hints[output?.hintIndex];
     if (!hint) throw new Error('Invalid hint selection');
+    if (!useLocalModel) logger.info('Quest Coach selected a grounded hint.', { model });
     return { hint, source: useLocalModel ? 'local-grounded' : 'genkit' };
   } catch {
     logger.warn('Quest model returned no usable hint.');

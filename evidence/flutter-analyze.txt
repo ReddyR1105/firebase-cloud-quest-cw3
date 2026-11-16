@@ -1,3 +1,3 @@
 Command: flutter analyze
 Analyzing firebase_cloud_quest_cw3...
-No issues found! (ran in 10.4s)
+No issues found! (ran in 13.9s)

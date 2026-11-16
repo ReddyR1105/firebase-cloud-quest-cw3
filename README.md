@@ -46,21 +46,39 @@ flutter run -d emulator-5554
 
 Use the actual identifier from `flutter devices`. `flutter run -d chrome` uses the same local Firebase services. Android emulators use host address `10.0.2.2`. To use another host, pass `--dart-define=EMULATOR_HOST=<host>` and make sure that device can reach the emulators. On Bash, set and export `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080` before seeding or testing.
 
-## Connect an approved model and live Firebase
+## Provisional Gemini and the course gateway
 
-Install the course-approved Genkit plugin in `functions/` once the course supplies its gateway details. Set these variables in the ignored `functions/.env.local` file and restart the emulators.
+The provisional provider is Google Gemini Developer API, using `googleai/gemini-3.6-flash` and `@genkit-ai/google-genai` 1.44.0 with Genkit 1.44.0. Professor Henry has yet to approve this provider or model. The adapter and deterministic emulator model have passed local tests. A live Gemini API response remains unverified because a credential was unavailable. [Gemini model documentation](https://aistudio.google.com/docs/models/gemini-3.6-flash) · [Genkit Google GenAI plugin](https://genkit.dev/docs/js/integrations/google-genai/)
+
+The Functions emulator uses the deterministic model when the gateway settings and local key are empty. For a live-provider test against the local Auth, Firestore, and Functions services, stop the existing emulator session and start it from a PowerShell terminal that holds the key. The masked prompt keeps the key out of command history and source files.
+
+```powershell
+$env:QUEST_LOCAL_MODEL_API_KEY = Read-Host -MaskInput "Gemini API key"
+firebase emulators:start --only auth,firestore,functions
+```
+
+In a second terminal, run the focused Signal Check. The test requires a Genkit-backed reply and fails if it receives the emulator fallback. Save the real response and snapshots from the test output, plus the model event from the Functions log. The adversarial request is refused by the callable before it reaches the provider.
+
+```powershell
+$env:FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080'
+$env:CW3_EXPECT_COACH_SOURCE = 'genkit'
+node --test --test-name-pattern='Signal Check uses authenticated state' functions/emulator.test.js
+Remove-Item Env:CW3_EXPECT_COACH_SOURCE
+```
+
+When the course provides its approved gateway, install the appropriate Genkit plugin in `functions/` and override these server-side settings. Use the Functions process environment or the ignored `functions/.env.local` file for local configuration.
 
 | Variable | Value |
 |---|---|
 | `QUEST_MODEL_PLUGIN` | The approved plugin's npm package name or a trusted adapter path relative to `functions/index.js` |
-| `QUEST_MODEL_PLUGIN_FACTORY` | The plugin factory export, defaulting to `default` |
-| `QUEST_MODEL_NAME` | The plugin's full Genkit model reference |
+| `QUEST_MODEL_PLUGIN_FACTORY` | The plugin factory export. Gemini uses `googleAI` and other plugins default to `default` |
+| `QUEST_MODEL_NAME` | Full Genkit model reference. Gemini defaults to `googleai/gemini-3.6-flash` |
 | `QUEST_MODEL_OPTIONS` | JSON object with the plugin's non-secret options, such as the approved gateway URL if required |
 | `QUEST_LOCAL_MODEL_API_KEY` | The credential for local emulator testing when the gateway requires it |
 
 The factory receives the options and the key as `apiKey`. Use a server-side adapter returning a Genkit plugin if the approved gateway takes a different configuration shape. The expected model output is a JSON object with a single integer `hintIndex`. [Genkit model setup](https://genkit.dev/docs/js/models/)
 
-For deployment, first enable email/password Auth and create Firestore in an authorized Firebase project. Seed `challenges/today` with the data in [functions/challenge.json](functions/challenge.json) using authorized admin access. Set the non-secret gateway variables and `QUEST_COACH_SERVICE_ACCOUNT` in `functions/.env.<project-id>`. Use a dedicated account for the coach with Firestore read access (`roles/datastore.viewer`) and access to its own bound secret. `completeToday` uses a separate function identity with write access. Verify the coach account's effective permissions in the deployed project. [Function runtime options](https://firebase.google.com/docs/functions/manage-functions?gen=2nd) · [Firestore IAM roles](https://docs.cloud.google.com/iam/docs/roles-permissions/firestore)
+For deployment, first enable email/password Auth and create Firestore in an authorized Firebase project. Seed `challenges/today` with the data in [functions/challenge.json](functions/challenge.json) using authorized admin access. Set `QUEST_COACH_SERVICE_ACCOUNT` and any non-secret gateway overrides in `functions/.env.<project-id>`. Cloud Functions defaults to the provisional Gemini settings when no overrides are provided. Use a dedicated account for the coach with Firestore read access (`roles/datastore.viewer`) and access to its own bound secret. `completeToday` uses a separate function identity with write access. Verify the coach account's effective permissions in the deployed project. [Function runtime options](https://firebase.google.com/docs/functions/manage-functions?gen=2nd) · [Firestore IAM roles](https://docs.cloud.google.com/iam/docs/roles-permissions/firestore)
 
 Create the bound secret with `firebase functions:secrets:set QUEST_MODEL_API_KEY --project <project-id>`. Deploy the functions and rules with `firebase deploy --only functions,firestore:rules --project <project-id>`. Register the Flutter app with Firebase for the target platform and run with `USE_EMULATORS=false` and the platform-specific `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_API_KEY`, and `FIREBASE_SENDER_ID` Dart defines. Live Firebase and model calls require separate verification.
 
@@ -74,7 +92,7 @@ npm --prefix functions test
 flutter drive -d emulator-5554 --driver=test_driver/integration_test.dart --target=integration_test/signal_check_test.dart
 ```
 
-- Nine [backend tests](evidence/backend-tests.txt) passed. The log includes the saved 10-point reward and timestamp, an idempotent retry, a rejected direct client write, safe challenge and model failures, and unchanged Firestore records for the caller and a second test learner. The [tool log](evidence/quest-coach-tool.txt) records execution of the authorized state read.
+- Ten [backend tests](evidence/backend-tests.txt) passed. The log includes the saved 10-point reward and timestamp, an idempotent retry, a rejected direct client write, safe challenge and model failures, and before-and-after records for both learners. The installed Gemini adapter used a local provider fixture to verify the exact model ID, the structured hint, the outbound data boundary, and the refusal before a second provider request. [Tool log](evidence/quest-coach-tool.txt) · [Provider verification status](evidence/gemini-verification.txt)
 - [Static analysis](evidence/flutter-analyze.txt) reported zero issues, and all four [Flutter tests](evidence/flutter-tests.txt) passed.
 - [Emulator startup](evidence/firebase-emulators.txt) records the local Auth, Firestore, and Cloud Functions run.
 - The [Android integration test](evidence/android-integration.txt) passed on an Android 17 emulator. It covered registration, both coach requests, first and repeat completion, failed sign-in and recovery, coach service-error recovery, sign-out, and cleared private UI state. The test driver supplies keyboard input while the app uses the Firebase emulators. [Android screenshots](evidence/android/)
@@ -83,4 +101,4 @@ flutter drive -d emulator-5554 --driver=test_driver/integration_test.dart --targ
 
 ## Limitations
 
-Local verification uses a deterministic emulator model. The course gateway settings were unavailable, so cloud deployment and live model output remain unverified. The Android build uses a Kotlin non-incremental compile setting to support a Windows project and package cache on different drives. The final Functions dependency audit reported 61 moderate and 4 high findings, down from 62 moderate and 9 high. [Audit output](evidence/dependency-audit.txt)
+The course gateway settings and a live Gemini key were unavailable. Cloud deployment and live model output remain unverified. The Android build uses a Kotlin non-incremental compile setting to support a Windows project and package cache on different drives. The current Functions dependency audit reports 62 moderate and 4 high findings. [Audit output](evidence/dependency-audit.txt)
