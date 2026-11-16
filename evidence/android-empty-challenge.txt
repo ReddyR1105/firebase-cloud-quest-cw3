@@ -1,0 +1,8 @@
+Command: flutter drive --no-pub -d emulator-5554 --dart-define=EXPECT_EMPTY_CHALLENGE=true --driver=test_driver/integration_test.dart --target=integration_test/signal_check_test.dart
+Removed the challenge fixture from the local demo emulator.
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...          900ms
+I/flutter (14387): 00:00 +0: Android empty challenge disables unavailable actions
+I/flutter (14387): 00:06 +2: All tests passed!
+All tests passed.
+Seeded challenges/today in the Firestore emulator.

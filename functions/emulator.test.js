@@ -51,7 +51,7 @@ before(async () => {
   if (process.env.FIRESTORE_EMULATOR_HOST !== '127.0.0.1:8080') {
     throw new Error('Run against the local Firestore emulator on port 8080.');
   }
-  adminApp = initializeApp({ projectId });
+  adminApp = initializeApp({ projectId }, 'audit-fixtures');
   db = getFirestore(adminApp);
   rules = await initializeTestEnvironment({
     projectId,
@@ -140,8 +140,59 @@ test('rules enforce authenticated challenge reads, own progress reads, and serve
 test('coach requires authentication and validates question type and length', async () => {
   assert.equal((await call('askQuestCoach', { question: 'Hint?' })).error.status, 'UNAUTHENTICATED');
   const user = await learner();
-  for (const question of [null, 500, ' ', 'x'.repeat(301), 'hint\0text']) {
+  for (const question of [null, 500, ' ', 'x'.repeat(301), '👩‍💻'.repeat(301), 'hint\0text']) {
     assert.equal((await call('askQuestCoach', { question }, user)).error.status, 'INVALID_ARGUMENT');
+  }
+  assert.equal((await call('askQuestCoach', { question: '👩‍💻'.repeat(300) }, user)).status, 200);
+});
+
+test('missing or malformed challenge yields a safe error and no reward', async () => {
+  const user = await learner();
+  const challengeRef = db.doc('challenges/today');
+  try {
+    await challengeRef.delete();
+    for (const [name, payload] of [
+      ['completeToday', { challengeId: 'today' }],
+      ['askQuestCoach', { question: 'Hint?' }],
+    ]) {
+      const response = await call(name, payload, user);
+      assert.equal(response.error.status, 'FAILED_PRECONDITION');
+      assert.equal(response.error.message, 'Today’s challenge is unavailable.');
+    }
+    await challengeRef.set({ ...challenge, hints: [] });
+    const malformed = await call('askQuestCoach', { question: 'Hint?' }, user);
+    assert.equal(malformed.error.status, 'UNAVAILABLE');
+    assert.equal(malformed.error.message, 'Quest state is unavailable. Try again later.');
+    assert.equal((await progress(user.localId).get()).exists, false);
+    console.log('Challenge failure outcomes: FAILED_PRECONDITION and sanitized UNAVAILABLE; no reward.');
+  } finally {
+    await challengeRef.set(challenge);
+  }
+});
+
+test('configured gateway failure returns a safe error after the tool read', async () => {
+  const user = await learner();
+  const settings = {
+    GCLOUD_PROJECT: projectId,
+    FUNCTIONS_EMULATOR: 'true',
+    QUEST_MODEL_PLUGIN: './missing-audit-gateway.cjs',
+    QUEST_MODEL_NAME: 'audit/unavailable',
+  };
+  const previous = Object.fromEntries(Object.keys(settings).map(name => [name, process.env[name]]));
+  Object.assign(process.env, settings);
+  try {
+    const { askQuestCoach } = require('./index');
+    await assert.rejects(
+      askQuestCoach.run({ auth: { uid: user.localId }, data: { question: 'Hint?' } }),
+      { code: 'unavailable', message: 'Quest Coach is unavailable. Try again later.' },
+    );
+    assert.equal((await progress(user.localId).get()).exists, false);
+    console.log('Configured gateway failure: sanitized UNAVAILABLE; no reward.');
+  } finally {
+    for (const [name, value] of Object.entries(previous)) {
+      if (value === undefined) delete process.env[name];
+      else process.env[name] = value;
+    }
   }
 });
 

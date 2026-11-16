@@ -14,6 +14,8 @@ void main() {
     expect(validateQuestion('   '), isNotNull);
     expect(validateQuestion(List.filled(300, 'a').join()), isNull);
     expect(validateQuestion(List.filled(301, 'a').join()), isNotNull);
+    expect(validateQuestion(List.filled(300, '👩‍💻').join()), isNull);
+    expect(validateQuestion(List.filled(301, '👩‍💻').join()), isNotNull);
   });
 
   test('progress represents missing and completed documents', () {

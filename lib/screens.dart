@@ -11,7 +11,7 @@ String? validateEmail(String? value) =>
 
 String? validateQuestion(String? value) {
   if (value == null || value.trim().isEmpty) return 'Enter a question.';
-  if (value.length > 300) return 'Use at most 300 characters.';
+  if (value.characters.length > 300) return 'Use at most 300 characters.';
   return null;
 }
 
@@ -263,7 +263,11 @@ class _QuestScreenState extends State<QuestScreen> {
     } on FirebaseFunctionsException catch (error) {
       if (mounted) {
         setState(() {
-          _completion = error.message ?? 'Completion failed. Retry.';
+          _completion = switch (error.code) {
+            'failed-precondition' when error.message != null => error.message!,
+            'unauthenticated' => 'Sign in again before recording completion.',
+            _ => 'Completion could not be checked. Try again.',
+          };
           _completionError = true;
         });
       }
@@ -286,7 +290,12 @@ class _QuestScreenState extends State<QuestScreen> {
     } on FirebaseFunctionsException catch (error) {
       if (mounted) {
         setState(
-          () => _coachError = error.message ?? 'The coach could not respond.',
+          () => _coachError = switch (error.code) {
+            'failed-precondition' ||
+            'invalid-argument' when error.message != null => error.message!,
+            'unauthenticated' => 'Sign in again to ask Quest Coach.',
+            _ => 'Quest Coach is unavailable. Try again later.',
+          },
         );
       }
     } finally {
@@ -294,37 +303,34 @@ class _QuestScreenState extends State<QuestScreen> {
     }
   }
 
-  Widget _dailyChallenge() => StreamBuilder<DailyChallenge?>(
-    stream: _challenge,
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const LinearProgressIndicator();
-      }
-      final challenge = snapshot.data;
-      if (challenge == null || snapshot.hasError) {
-        return _Panel(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                snapshot.hasError
-                    ? 'Challenge could not load.'
-                    : 'No challenge is available today.',
-              ),
-              TextButton(
-                onPressed: () =>
-                    setState(() => _challenge = _service.challenge()),
-                child: const Text('Retry challenge'),
-              ),
-            ],
-          ),
-        );
-      }
-      return _Header('DAILY CHALLENGE', challenge.title, challenge.prompt);
-    },
-  );
+  Widget _dailyChallenge(AsyncSnapshot<DailyChallenge?> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const LinearProgressIndicator();
+    }
+    final challenge = snapshot.data;
+    if (challenge == null || snapshot.hasError) {
+      return _Panel(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              snapshot.hasError
+                  ? 'Challenge could not load.'
+                  : 'No challenge is available today.',
+            ),
+            TextButton(
+              onPressed: () =>
+                  setState(() => _challenge = _service.challenge()),
+              child: const Text('Retry challenge'),
+            ),
+          ],
+        ),
+      );
+    }
+    return _Header('DAILY CHALLENGE', challenge.title, challenge.prompt);
+  }
 
-  Widget _progressPanel() => _Panel(
+  Widget _progressPanel(bool challengeAvailable) => _Panel(
     child: StreamBuilder<QuestProgress>(
       stream: _progress,
       builder: (context, snapshot) {
@@ -364,10 +370,19 @@ class _QuestScreenState extends State<QuestScreen> {
               ],
             ),
             const SizedBox(height: 8),
-            Text(progress.completed ? 'Completed' : 'Ready to complete'),
+            Text(
+              progress.completed
+                  ? 'Completed'
+                  : challengeAvailable
+                  ? 'Ready to complete'
+                  : 'Waiting for today’s challenge',
+            ),
             const SizedBox(height: 12),
             FilledButton.icon(
-              onPressed: _completing ? null : _complete,
+              onPressed:
+                  _completing || (!challengeAvailable && !progress.completed)
+                  ? null
+                  : _complete,
               icon: const Icon(Icons.check_circle_outline),
               label: Text(
                 _completing
@@ -386,7 +401,7 @@ class _QuestScreenState extends State<QuestScreen> {
     ),
   );
 
-  Widget _coachPanel() => _Panel(
+  Widget _coachPanel(bool challengeAvailable) => _Panel(
     child: Form(
       key: _coachForm,
       child: Column(
@@ -400,7 +415,7 @@ class _QuestScreenState extends State<QuestScreen> {
             maxLength: 300,
             minLines: 2,
             maxLines: 4,
-            enabled: !_asking,
+            enabled: challengeAvailable && !_asking,
             decoration: const InputDecoration(
               labelText: 'What would you like a hint about?',
             ),
@@ -409,7 +424,7 @@ class _QuestScreenState extends State<QuestScreen> {
           Align(
             alignment: Alignment.centerLeft,
             child: FilledButton.tonalIcon(
-              onPressed: _asking ? null : _ask,
+              onPressed: _asking || !challengeAvailable ? null : _ask,
               icon: const Icon(Icons.lightbulb_outline),
               label: Text(_asking ? 'Getting hint…' : 'Get Hint'),
             ),
@@ -439,16 +454,25 @@ class _QuestScreenState extends State<QuestScreen> {
         const SizedBox(width: 8),
       ],
     ),
-    body: _Page(
-      width: 660,
-      children: [
-        if (_signOutError != null) _Message(_signOutError!, error: true),
-        _dailyChallenge(),
-        const SizedBox(height: 16),
-        _progressPanel(),
-        const SizedBox(height: 16),
-        _coachPanel(),
-      ],
+    body: StreamBuilder<DailyChallenge?>(
+      stream: _challenge,
+      builder: (context, snapshot) {
+        final available =
+            snapshot.connectionState != ConnectionState.waiting &&
+            snapshot.hasData &&
+            !snapshot.hasError;
+        return _Page(
+          width: 660,
+          children: [
+            if (_signOutError != null) _Message(_signOutError!, error: true),
+            _dailyChallenge(snapshot),
+            const SizedBox(height: 16),
+            _progressPanel(available),
+            const SizedBox(height: 16),
+            _coachPanel(available),
+          ],
+        );
+      },
     ),
   );
 }

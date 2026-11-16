@@ -1,6 +1,7 @@
+Command: flutter test --reporter expanded
 00:00 +0: loading ./test/signal_check_test.dart
 00:00 +0: email validation handles whitespace and invalid addresses
 00:00 +1: question validation enforces blank and length boundaries
 00:00 +2: progress represents missing and completed documents
 00:00 +3: sign-in validates inputs and opens registration on a small viewport
-00:02 +4: All tests passed!
+00:01 +4: All tests passed!

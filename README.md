@@ -18,6 +18,8 @@
 
 Signal Check is a Material 3 Flutter app that uses Firebase Authentication, Cloud Firestore, and two Node.js Cloud Functions. Learners register or sign in with email and password, read a shared challenge, ask for a hint, and record completion. The challenge asks learners to explain identity, ownership, and trusted rewards before marking their own work complete.
 
+The project includes Android, iOS, and web targets. The audited mobile target is the Android 17 emulator.
+
 ## How the app works
 
 - **Authentication** uses `authStateChanges()` to show the sign-in form or the signed-in quest. Signing out disposes the quest screen and its subscriptions.
@@ -58,7 +60,9 @@ Install the course-approved Genkit plugin in `functions/` once the course suppli
 
 The factory receives the options and the key as `apiKey`. Use a server-side adapter returning a Genkit plugin if the approved gateway takes a different configuration shape. The expected model output is a JSON object with a single integer `hintIndex`. [Genkit model setup](https://genkit.dev/docs/js/models/)
 
-For deployment, first enable email/password Auth and create Firestore in an authorized Firebase project. Seed `challenges/today` with the data in [functions/challenge.json](functions/challenge.json) using authorized admin access. Set the four non-secret gateway variables in `functions/.env.<project-id>` and create the bound secret with `firebase functions:secrets:set QUEST_MODEL_API_KEY --project <project-id>`. Deploy the functions and rules with `firebase deploy --only functions,firestore:rules --project <project-id>`. Register the Flutter app with Firebase for the target platform and run with `USE_EMULATORS=false` and the platform-specific `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_API_KEY`, and `FIREBASE_SENDER_ID` Dart defines. Live Firebase and model calls require separate verification.
+For deployment, first enable email/password Auth and create Firestore in an authorized Firebase project. Seed `challenges/today` with the data in [functions/challenge.json](functions/challenge.json) using authorized admin access. Set the non-secret gateway variables and `QUEST_COACH_SERVICE_ACCOUNT` in `functions/.env.<project-id>`. Use a dedicated account for the coach with Firestore read access (`roles/datastore.viewer`) and access to its own bound secret. `completeToday` uses a separate function identity with write access. Verify the coach account's effective permissions in the deployed project. [Function runtime options](https://firebase.google.com/docs/functions/manage-functions?gen=2nd) · [Firestore IAM roles](https://docs.cloud.google.com/iam/docs/roles-permissions/firestore)
+
+Create the bound secret with `firebase functions:secrets:set QUEST_MODEL_API_KEY --project <project-id>`. Deploy the functions and rules with `firebase deploy --only functions,firestore:rules --project <project-id>`. Register the Flutter app with Firebase for the target platform and run with `USE_EMULATORS=false` and the platform-specific `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`, `FIREBASE_API_KEY`, and `FIREBASE_SENDER_ID` Dart defines. Live Firebase and model calls require separate verification.
 
 ## Tests and evidence
 
@@ -70,11 +74,13 @@ npm --prefix functions test
 flutter drive -d emulator-5554 --driver=test_driver/integration_test.dart --target=integration_test/signal_check_test.dart
 ```
 
-- Seven [backend tests](evidence/backend-tests.txt) passed. The log includes the saved 10-point reward and timestamp, an idempotent retry, a rejected direct client write, and unchanged Firestore records for the caller and a second test learner.
+- Nine [backend tests](evidence/backend-tests.txt) passed. The log includes the saved 10-point reward and timestamp, an idempotent retry, a rejected direct client write, safe challenge and model failures, and unchanged Firestore records for the caller and a second test learner. The [tool log](evidence/quest-coach-tool.txt) records execution of the authorized state read.
 - [Static analysis](evidence/flutter-analyze.txt) reported zero issues, and all four [Flutter tests](evidence/flutter-tests.txt) passed.
 - [Emulator startup](evidence/firebase-emulators.txt) records the local Auth, Firestore, and Cloud Functions run.
-- The [Android integration test](evidence/android-integration.txt) passed on an Android 17 emulator. It covered registration, both coach requests, first and repeat completion, sign-out, and signing back in. The [Android screenshots](evidence/android/) show the challenge, responses, and reward. The test driver supplies keyboard input while the app uses the Firebase emulators.
+- The [Android integration test](evidence/android-integration.txt) passed on an Android 17 emulator. It covered registration, both coach requests, first and repeat completion, failed sign-in and recovery, coach service-error recovery, sign-out, and cleared private UI state. The test driver supplies keyboard input while the app uses the Firebase emulators. [Android screenshots](evidence/android/)
+- A separate Android run verified the empty challenge, the retry button, and disabled completion and hint controls before the seed was restored. [Empty challenge test](evidence/android-empty-challenge.txt)
+- See the [final submission audit](FINAL_SUBMISSION_AUDIT.md) for the readiness decision, scoring, and remaining actions.
 
 ## Limitations
 
-Local verification uses a deterministic emulator model. The course gateway settings were unavailable, so cloud deployment and live model output remain unverified. The Android build uses a Kotlin non-incremental compile setting to support a Windows project and package cache on different drives. The dependency audit reported 62 moderate and 9 high findings for the installed Functions dependencies. [Audit output](evidence/dependency-audit.txt)
+Local verification uses a deterministic emulator model. The course gateway settings were unavailable, so cloud deployment and live model output remain unverified. The Android build uses a Kotlin non-incremental compile setting to support a Windows project and package cache on different drives. The final Functions dependency audit reported 61 moderate and 4 high findings, down from 62 moderate and 9 high. [Audit output](evidence/dependency-audit.txt)

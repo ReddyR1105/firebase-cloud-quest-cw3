@@ -1,44 +1,65 @@
+Command: npm --prefix functions test
+
+> firebase-cloud-quest-cw3-functions@1.0.0 test
+> node --test emulator.test.js
+
 TAP version 13
-# First and duplicate: {"first":{"status":200,"result":{"completed":true,"points":10,"badgeId":"first-quest","alreadyCompleted":false}},"duplicate":{"status":200,"result":{"completed":true,"points":10,"badgeId":"first-quest","alreadyCompleted":true}},"savedProgress":{"completed":true,"points":10,"badgeId":"first-quest","completedAt":{"_seconds":1794779900,"_nanoseconds":561000000}}}
+# First and duplicate: {"first":{"status":200,"result":{"completed":true,"points":10,"badgeId":"first-quest","alreadyCompleted":false}},"duplicate":{"status":200,"result":{"completed":true,"points":10,"badgeId":"first-quest","alreadyCompleted":true}},"savedProgress":{"completed":true,"points":10,"badgeId":"first-quest","completedAt":{"_seconds":1794787600,"_nanoseconds":25000000}}}
 # Subtest: first completion writes a timestamp and exactly 10 points; retry is idempotent
 ok 1 - first completion writes a timestamp and exactly 10 points; retry is idempotent
   ---
-  duration_ms: 5090.9072
+  duration_ms: 4251.9791
   type: 'test'
   ...
 # Subtest: completion rejects signed-out users and invalid challenge IDs
 ok 2 - completion rejects signed-out users and invalid challenge IDs
   ---
-  duration_ms: 27.7114
+  duration_ms: 29.9633
   type: 'test'
   ...
 # Subtest: completion ignores client-supplied reward and UID fields
 ok 3 - completion ignores client-supplied reward and UID fields
   ---
-  duration_ms: 93.8822
+  duration_ms: 91.9814
   type: 'test'
   ...
 # Subtest: six concurrent requests award the reward once
 ok 4 - six concurrent requests award the reward once
   ---
-  duration_ms: 7165.6621
+  duration_ms: 3850.5503
   type: 'test'
   ...
-# [2026-11-15T21:58:28.201Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x3d170a82 error. Code: 7 Message: 7 PERMISSION_DENIED: No matching allow statements
-# [2026-11-15T21:58:28.217Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x3d170a83 error. Code: 7 Message: 7 PERMISSION_DENIED: No matching allow statements
-# [2026-11-15T21:58:28.232Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x3d170a84 error. Code: 7 Message: 7 PERMISSION_DENIED: No matching allow statements
-# [2026-11-15T21:58:28.247Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x3d170a85 error. Code: 7 Message: 7 PERMISSION_DENIED: No matching allow statements
+# [2026-11-16T00:06:44.447Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x89cb29d3 error. Code: 7 Message: 7 PERMISSION_DENIED: No matching allow statements
+# [2026-11-16T00:06:44.460Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x89cb29d4 error. Code: 7 Message: 7 PERMISSION_DENIED: No matching allow statements
+# [2026-11-16T00:06:44.483Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x89cb29d5 error. Code: 7 Message: 7 PERMISSION_DENIED: No matching allow statements
+# [2026-11-16T00:06:44.490Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x89cb29d6 error. Code: 7 Message: 7 PERMISSION_DENIED: No matching allow statements
 # Direct client reward update: permission-denied
 # Subtest: rules enforce authenticated challenge reads, own progress reads, and server-only writes
 ok 5 - rules enforce authenticated challenge reads, own progress reads, and server-only writes
   ---
-  duration_ms: 325.2887
+  duration_ms: 420.0942
   type: 'test'
   ...
 # Subtest: coach requires authentication and validates question type and length
 ok 6 - coach requires authentication and validates question type and length
   ---
-  duration_ms: 4564.171
+  duration_ms: 3330.2256
+  type: 'test'
+  ...
+# Challenge failure outcomes: FAILED_PRECONDITION and sanitized UNAVAILABLE; no reward.
+# Subtest: missing or malformed challenge yields a safe error and no reward
+ok 7 - missing or malformed challenge yields a safe error and no reward
+  ---
+  duration_ms: 130.89
+  type: 'test'
+  ...
+# {"severity":"INFO","message":"readMyQuestState succeeded for the authenticated caller."}
+# {"severity":"WARNING","message":"Quest model returned no usable hint."}
+# Configured gateway failure: sanitized UNAVAILABLE; no reward.
+# Subtest: configured gateway failure returns a safe error after the tool read
+ok 8 - configured gateway failure returns a safe error after the tool read
+  ---
+  duration_ms: 827.6833
   type: 'test'
   ...
 # Signal Check: {
@@ -70,17 +91,17 @@ ok 6 - coach requires authentication and validates question type and length
 #   ]
 # }
 # Subtest: Signal Check uses authenticated state and leaves both learners’ records unchanged
-ok 7 - Signal Check uses authenticated state and leaves both learners’ records unchanged
+ok 9 - Signal Check uses authenticated state and leaves both learners’ records unchanged
   ---
-  duration_ms: 619.4635
+  duration_ms: 76.5851
   type: 'test'
   ...
-1..7
-# tests 7
+1..9
+# tests 9
 # suites 0
-# pass 7
+# pass 9
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 18503.1708
+# duration_ms 13592.3486

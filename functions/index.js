@@ -2,6 +2,7 @@ const { initializeApp } = require('firebase-admin/app');
 const { FieldValue, getFirestore } = require('firebase-admin/firestore');
 const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const { defineSecret, defineString } = require('firebase-functions/params');
+const logger = require('firebase-functions/logger');
 const { genkit, z } = require('genkit');
 
 initializeApp();
@@ -14,6 +15,15 @@ const gatewayPlugin = defineString('QUEST_MODEL_PLUGIN', { default: '' });
 const gatewayFactory = defineString('QUEST_MODEL_PLUGIN_FACTORY', { default: 'default' });
 const gatewayOptions = defineString('QUEST_MODEL_OPTIONS', { default: '{}' });
 const localModelName = 'signal-check/emulator';
+const questionSegments = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+
+function withinQuestionLimit(question) {
+  let count = 0;
+  for (const segment of questionSegments.segment(question)) {
+    if (++count > 300) return false;
+  }
+  return true;
+}
 
 function requireUid(request) {
   if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in to continue.');
@@ -106,16 +116,28 @@ function createModelAI(apiKey, pluginName) {
 }
 
 const isEmulator = process.env.FUNCTIONS_EMULATOR === 'true';
-const coachOptions = isEmulator ? {} : { secrets: [gatewayKey] };
+const coachOptions = isEmulator ? {} : {
+  secrets: [gatewayKey],
+  serviceAccount: defineString('QUEST_COACH_SERVICE_ACCOUNT'),
+};
 exports.askQuestCoach = onCall(coachOptions, async request => {
   const uid = requireUid(request);
   const rawQuestion = request.data?.question;
-  if (typeof rawQuestion !== 'string' || rawQuestion.length > 300 ||
-      !rawQuestion.trim() || /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u.test(rawQuestion)) {
+  if (typeof rawQuestion !== 'string' || !rawQuestion.trim() ||
+      /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u.test(rawQuestion) ||
+      !withinQuestionLimit(rawQuestion)) {
     throw new HttpsError('invalid-argument', 'Enter a question with 1 to 300 characters.');
   }
   const question = rawQuestion.trim();
-  const state = await readMyQuestState({}, { context: { auth: { uid } } });
+  let state;
+  try {
+    state = await readMyQuestState({}, { context: { auth: { uid } } });
+  } catch (error) {
+    if (error instanceof HttpsError) throw error;
+    logger.warn('Quest state could not be read.');
+    throw new HttpsError('unavailable', 'Quest state is unavailable. Try again later.');
+  }
+  logger.info('readMyQuestState succeeded for the authenticated caller.');
 
   if (/\b(another learner|other learner|someone else|ignore your rules|give me \d+ points)\b/iu.test(question)) {
     return {
@@ -145,6 +167,7 @@ exports.askQuestCoach = onCall(coachOptions, async request => {
     if (!hint) throw new Error('Invalid hint selection');
     return { hint, source: useLocalModel ? 'local-grounded' : 'genkit' };
   } catch {
+    logger.warn('Quest model returned no usable hint.');
     throw new HttpsError('unavailable', 'Quest Coach is unavailable. Try again later.');
   }
 });
